@@ -20,7 +20,13 @@
     "@astrojs/sitemap": "^3.1.6",
     "@astrojs/vue": "^4.5.0",
     "astro": "^4.10.3",
+    "canvas-confetti": "^1.9.3",
+    "lodash.debounce": "^4.0.8",
     "typescript": "^5.4.5",
     "vue": "^3.4.29"
+  },
+  "devDependencies": {
+    "@types/canvas-confetti": "^1.6.4",
+    "@types/lodash.debounce": "^4.0.9"
   }
 }
