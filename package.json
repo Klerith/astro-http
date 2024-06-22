@@ -13,16 +13,16 @@
   },
   "dependencies": {
     "@astrojs/check": "^0.7.0",
-    "@astrojs/cloudflare": "^10.4.1",
+    "@astrojs/cloudflare": "^10.4.2",
     "@astrojs/db": "^0.11.6",
     "@astrojs/mdx": "^3.1.1",
     "@astrojs/rss": "^4.0.6",
     "@astrojs/sitemap": "^3.1.6",
     "@astrojs/vue": "^4.5.0",
-    "astro": "^4.10.3",
+    "astro": "^4.11.0",
     "canvas-confetti": "^1.9.3",
     "lodash.debounce": "^4.0.8",
-    "typescript": "^5.4.5",
+    "typescript": "^5.5.2",
     "vue": "^3.4.29"
   },
   "devDependencies": {
