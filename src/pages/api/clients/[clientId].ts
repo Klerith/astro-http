@@ -1,4 +1,4 @@
-import { prisma } from '@db';
+import prisma from '@db';
 import type { APIRoute } from 'astro';
 
 export const prerender = false;

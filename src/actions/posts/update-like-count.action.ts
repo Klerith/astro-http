@@ -1,6 +1,6 @@
 import { defineAction } from 'astro:actions';
 import { z } from 'astro:schema';
-import { prisma } from '@db';
+import prisma from '@db';
 
 export const updateLikeCount = defineAction({
   accept: 'json',
