@@ -22,6 +22,6 @@ export default defineConfig( {
   } ),
 
   server: {
-    port: process.env.PORT || 3000,
+    port: import.meta.env.PORT || 3000,
   }
 } );
