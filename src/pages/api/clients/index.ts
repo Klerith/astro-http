@@ -1,7 +1,7 @@
 import type { APIRoute } from 'astro';
 import { v4 as UUID } from 'uuid';
 
-import prisma from '@db';
+import { prisma } from '@db';
 
 export const prerender = false;
 
