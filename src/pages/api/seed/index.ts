@@ -1,4 +1,4 @@
-import prisma from '@db';
+import { prisma } from '@db';
 import type { APIRoute } from 'astro';
 import { getCollection } from 'astro:content';
 import { v4 as UUID } from 'uuid';
