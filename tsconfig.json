@@ -4,6 +4,9 @@
     "strictNullChecks": true,
     "baseUrl": ".",
     "paths": {
+      "@db": [
+        "src/db"
+      ],
       "@*": [
         "src/*"
       ]

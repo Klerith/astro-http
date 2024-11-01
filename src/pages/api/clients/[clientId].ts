@@ -1,90 +1,104 @@
+import prisma from '@db';
 import type { APIRoute } from 'astro';
-import { db, Clients, eq } from 'astro:db';
 
 export const prerender = false;
 
-export const GET: APIRoute = async ({ params, request }) => {
-  const clientId = params.clientId ?? '';
-
-  const clients = await db
-    .select()
-    .from(Clients)
-    .where(eq(Clients.id, +clientId));
-
-  if (clients.length === 0) {
-    return new Response(
-      JSON.stringify({ msg: `Client with id ${clientId} not found` }),
-      {
-        status: 404,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      }
-    );
-  }
-
-  return new Response(JSON.stringify(clients.at(0)), {
-    status: 200,
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  });
-};
-
-export const PATCH: APIRoute = async ({ params, request }) => {
-  const clientId = params.clientId ?? '';
-
+const findClientById = async (clientId: string) => {
   try {
-    const { id, ...body } = await request.json();
-
-    const results = await db
-      .update(Clients)
-      .set(body)
-      .where(eq(Clients.id, +clientId));
-
-    const updatedClient = await db
-      .select()
-      .from(Clients)
-      .where(eq(Clients.id, +clientId));
-
-    return new Response(JSON.stringify(updatedClient.at(0)), {
-      status: 201,
-      headers: {
-        'Content-Type': 'application/json',
+    const client = await prisma.client.findUnique({
+      where: {
+        id: clientId,
       },
     });
+
+    return client;
   } catch (error) {
     console.log(error);
-
-    return new Response(JSON.stringify({ msg: 'No body found' }), {
-      status: 201,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
+    return null;
   }
 };
 
-export const DELETE: APIRoute = async ({ params, request }) => {
-  const clientId = params.clientId ?? '';
+export const GET: APIRoute = async ({ params, request }) => {
+  const { clientId = '' } = params;
 
-  const { rowsAffected } = await db
-    .delete(Clients)
-    .where(eq(Clients.id, +clientId));
+  try {
+    const client = await findClientById(clientId);
 
-  if (rowsAffected > 0) {
-    return new Response(JSON.stringify({ msg: 'Deleted' }), {
+    if (!client) {
+      return new Response(`Client with id ${clientId} not found`, {
+        status: 404,
+      });
+    }
+
+    const responseObj = JSON.stringify(client);
+
+    return new Response(responseObj, {
       status: 200,
       headers: {
         'Content-Type': 'application/json',
       },
     });
+  } catch (error) {
+    return new Response('Bad request', {
+      status: 400,
+    });
+  }
+};
+
+export const PATCH: APIRoute = async ({ params, request }) => {
+  const { clientId = '' } = params;
+
+  const client = await findClientById(clientId);
+
+  if (!client) {
+    return new Response(`Client with id ${clientId} not found`);
   }
 
+  try {
+    const { id, ...body } = await request.json();
+
+    const updatedClient = await prisma.client.update({
+      where: {
+        id: clientId,
+      },
+      data: body,
+    });
+
+    return new Response(JSON.stringify(updatedClient), {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+  } catch (error) {
+    return new Response('Bad request', {
+      status: 400,
+    });
+  }
+};
+
+export const DELETE: APIRoute = async ({ params, request }) => {
+  const { clientId = '' } = params;
+
+  const client = await findClientById(clientId);
+
+  if (!client) {
+    return new Response(`Client with id ${clientId} not found`);
+  }
+
+  const deletedClient = await prisma.client.delete({
+    where: {
+      id: clientId,
+    },
+  });
+
   return new Response(
-    JSON.stringify({ msg: `Client with id ${clientId} not found` }),
+    JSON.stringify({
+      msg: 'deleted',
+      client: deletedClient,
+    }),
     {
-      status: 404,
+      status: 200,
       headers: {
         'Content-Type': 'application/json',
       },

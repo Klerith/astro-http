@@ -4,29 +4,30 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "astro dev",
-    "dev:remote": "astro dev --remote",
     "start": "astro dev",
-    "build": "astro build --remote",
-    "check": "astro check",
+    "build": "npm run prisma:generate && astro check && astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "prisma:generate": "prisma generate"
   },
   "dependencies": {
-    "@astrojs/check": "^0.7.0",
-    "@astrojs/cloudflare": "^10.4.2",
-    "@astrojs/db": "^0.11.6",
-    "@astrojs/mdx": "^3.1.1",
-    "@astrojs/rss": "^4.0.6",
-    "@astrojs/sitemap": "^3.1.6",
-    "@astrojs/vue": "^4.5.0",
-    "astro": "^4.11.0",
+    "@astrojs/check": "^0.9.4",
+    "@astrojs/cloudflare": "^11.2.0",
+    "@astrojs/mdx": "^3.1.9",
+    "@astrojs/rss": "^4.0.9",
+    "@astrojs/sitemap": "^3.2.1",
+    "@astrojs/vue": "^4.5.2",
+    "@prisma/client": "^5.21.1",
+    "astro": "^4.16.8",
     "canvas-confetti": "^1.9.3",
     "lodash.debounce": "^4.0.8",
-    "typescript": "^5.5.2",
-    "vue": "^3.4.29"
+    "typescript": "^5.6.3",
+    "uuid": "^11.0.2",
+    "vue": "^3.5.12"
   },
   "devDependencies": {
     "@types/canvas-confetti": "^1.6.4",
-    "@types/lodash.debounce": "^4.0.9"
+    "@types/lodash.debounce": "^4.0.9",
+    "prisma": "^5.21.1"
   }
 }

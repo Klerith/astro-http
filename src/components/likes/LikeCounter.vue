@@ -1,96 +1,80 @@
 <template>
+  <div v-if="isLoading">Loading...</div>
 
-  <div v-if="isLoading">
-    Loading...
-  </div>
-
-
-  <button v-else-if="likeCount === 0" @click="likePost">
-      Like this post
-  </button>
-
+  <button v-else-if="likeCount === 0" @click="likePost">Like this post</button>
   <button v-else @click="likePost">
-      Likes 
-      <span>{{ likeCount }}</span>
+    Likes <span>{{ likeCount }}</span>
   </button>
 
-  
-
+  {{ likeClicks }} clicks
 </template>
-
 
 <script lang="ts" setup>
 import { ref, watch } from 'vue';
+import { actions } from 'astro:actions';
+import debounce from 'lodash.debounce';
 import confetti from 'canvas-confetti';
-import debounce from 'lodash.debounce'
 
 interface Props {
   postId: string;
 }
 
 const props = defineProps<Props>();
+// console.log(props.postId);
 
 const likeCount = ref(0);
 const likeClicks = ref(0);
 const isLoading = ref(true);
 
+watch(
+  likeCount,
+  debounce((newValue, oldValue) => {
+    // console.log('likeCount changed from', oldValue, 'to', newValue);
 
-watch( likeCount, debounce(() =>{
-  
+    actions.updateLikeCount({
+      increment: likeClicks.value,
+      postId: props.postId,
+    });
 
-  fetch(`/api/posts/likes/${ props.postId }`, {
-    method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ likes: likeClicks.value })
-  });
+    likeClicks.value = 0;
+  }, 500)
+);
 
-  likeClicks.value = 0;
-
-
-
-}, 500 ))
-
-
-
-
-const likePost =()=> {
-
-  likeCount.value++
-  likeClicks.value++;
-
+const likePost = async () => {
+  // console.log('+1 like');
+  likeCount.value += 1;
+  likeClicks.value += 1;
 
   confetti({
     particleCount: 100,
     spread: 70,
     origin: {
       x: Math.random(),
-      y: Math.random() - 0.2
-    }
-  })
+      y: Math.random() - 0.2,
+    },
+  });
 
-}
+  // await actions.updateLikeCount({
+  //   increment: 1,
+  //   postId: props.postId,
+  // });
+};
 
+const getCurrentLikes = async () => {
+  console.log('fetching likes');
+  // fetch likes from the server fetch(`/api/likes/${props.postId}`)
+  const { data, error } = await actions.getLikes(props.postId);
+  // const likes = await actions.getLikes.orThrow(props.postId)
+  if (error) {
+    return alert('Error fetching likes');
+  }
 
-
-const getCurrentLikes = async() => {
-  const resp = await fetch(`/api/posts/likes/${ props.postId }`);
-  if ( !resp.ok ) return;
-
-  const data = await resp.json();
-  
-  likeCount.value = data.likes;
-  isLoading.value = false; 
-
-
-}
-
+  likeCount.value = data.likes || 0;
+  isLoading.value = false;
+};
 
 getCurrentLikes();
-
 </script>
-
 
 <style scoped>
 button {
