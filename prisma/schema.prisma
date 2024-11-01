@@ -15,7 +15,7 @@ model client {
 }
 
 model post {
-  id    String  @id @db.VarChar
-  title String? @db.VarChar
-  likes Int?
+  id    String @id @db.VarChar
+  title String @db.VarChar
+  likes Int
 }

@@ -1,11 +1,19 @@
 <template>
   <div v-if="isLoading">Loading...</div>
 
-  <button v-else @click="likePost">Like Counter</button>
+  <button v-else-if="likeCount === 0" @click="likePost">Like this post</button>
+  <button v-else @click="likePost">
+    Likes <span>{{ likeCount }}</span>
+  </button>
+
+  {{ likeClicks }} clicks
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
+import { actions } from 'astro:actions';
+import debounce from 'lodash.debounce';
+import confetti from 'canvas-confetti';
 
 interface Props {
   postId: string;
@@ -18,12 +26,51 @@ const likeCount = ref(0);
 const likeClicks = ref(0);
 const isLoading = ref(true);
 
-const likePost = () => {
-  console.log('+1 like');
+watch(
+  likeCount,
+  debounce((newValue, oldValue) => {
+    // console.log('likeCount changed from', oldValue, 'to', newValue);
+
+    actions.updateLikeCount({
+      increment: likeClicks.value,
+      postId: props.postId,
+    });
+
+    likeClicks.value = 0;
+  }, 500)
+);
+
+const likePost = async () => {
+  // console.log('+1 like');
+  likeCount.value += 1;
+  likeClicks.value += 1;
+
+  confetti({
+    particleCount: 100,
+    spread: 70,
+    origin: {
+      x: Math.random(),
+      y: Math.random() - 0.2,
+    },
+  });
+
+  // await actions.updateLikeCount({
+  //   increment: 1,
+  //   postId: props.postId,
+  // });
 };
 
-const getCurrentLikes = () => {
+const getCurrentLikes = async () => {
   console.log('fetching likes');
+  // fetch likes from the server fetch(`/api/likes/${props.postId}`)
+  const { data, error } = await actions.getLikes(props.postId);
+  // const likes = await actions.getLikes.orThrow(props.postId)
+  if (error) {
+    return alert('Error fetching likes');
+  }
+
+  likeCount.value = data.likes || 0;
+  isLoading.value = false;
 };
 
 getCurrentLikes();
