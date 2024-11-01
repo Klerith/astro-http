@@ -4,7 +4,8 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "astro dev",
-    "start": "astro dev",
+    "start:dev": "astro dev",
+    "start": "HOST=0.0.0.0 PORT=8080 NODE_ENV=production node ./dist/server/entry.mjs",
     "build": "npm run prisma:generate && astro check && astro build",
     "preview": "astro preview",
     "astro": "astro",
