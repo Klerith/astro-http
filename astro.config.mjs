@@ -6,10 +6,13 @@ import sitemap from '@astrojs/sitemap';
 import cloudflare from "@astrojs/cloudflare";
 
 
+import vue from '@astrojs/vue';
+
+
 // https://astro.build/config
 export default defineConfig( {
   site: 'https://example.com',
-  integrations: [ mdx(), sitemap() ],
+  integrations: [mdx(), sitemap(), vue()],
   output: "hybrid",
   adapter: cloudflare()
 } );
