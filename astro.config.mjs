@@ -4,10 +4,6 @@ import sitemap from '@astrojs/sitemap';
 
 // import node from "@astrojs/node";
 import cloudflare from "@astrojs/cloudflare";
-import db from "@astrojs/db";
-
-import vue from "@astrojs/vue";
-
 import vue from '@astrojs/vue';
 
 
