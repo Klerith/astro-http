@@ -41,8 +41,12 @@ const likePost = async () => {
 };
 
 const getCurrentLikes = async () => {
-  console.log(`fetching likes ${props.postId}`);
+  const { data, error } = await actions.getLikes(props.postId);
+  if (error) {
+    return alert('No se pudo leer el postID');
+  }
 
+  likeCount.value = data.likes;
   isLoading.value = false;
 };
 
