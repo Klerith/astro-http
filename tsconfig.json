@@ -4,7 +4,10 @@
     "strictNullChecks": true,
     "baseUrl": ".",
     "paths": {
-      "@db": ["src/db"]
-    }
+      "@db": [
+        "src/db"
+      ]
+    },
+    "jsx": "preserve"
   }
 }
