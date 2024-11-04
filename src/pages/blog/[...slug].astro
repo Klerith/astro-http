@@ -22,7 +22,7 @@ const { Content } = await post.render();
       height: '50px',
     }}
   >
-    <LikeCounter client:only="vue" />
+    <LikeCounter client:only="vue" postId={post.id} />
   </div>
 
   <Content />

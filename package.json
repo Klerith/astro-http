@@ -18,11 +18,13 @@
     "@astrojs/vue": "^4.5.2",
     "@prisma/client": "^5.21.1",
     "astro": "^4.10.3",
+    "canvas-confetti": "^1.9.3",
     "typescript": "^5.4.5",
     "uuid": "^11.0.2",
     "vue": "^3.5.12"
   },
   "devDependencies": {
+    "@types/canvas-confetti": "^1.6.4",
     "prisma": "^5.21.1"
   }
 }
