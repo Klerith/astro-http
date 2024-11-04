@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "astro dev",
     "old:start": "astro dev",
-    "start": "node ./dist/server/entry.mjs",
+    "start": "HOST=0.0.0.0 PORT=8080 node ./dist/server/entry.mjs",
     "build": "npm run prisma:generate && astro check && astro build",
     "preview": "astro preview",
     "astro": "astro",
