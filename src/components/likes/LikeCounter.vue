@@ -5,14 +5,15 @@
 
   <button v-else @click="likePost">Likes {{ likeCount }}</button>
 
-  <span>{{ likeClicks }}</span>
+  <!-- <span>{{ likeClicks }}</span> -->
 </template>
 
 <script lang="ts" setup>
 import { actions } from 'astro:actions';
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 
 import confetti from 'canvas-confetti';
+import debounce from 'lodash.debounce';
 
 interface Props {
   postId: string;
@@ -23,6 +24,19 @@ const props = defineProps<Props>();
 const likeCount = ref(0);
 const likeClicks = ref(0);
 const isLoading = ref(true);
+
+watch(
+  likeCount,
+  debounce((newValue, oldValue) => {
+    console.log(`Enviando ${likeClicks.value}`);
+    actions.updateLikeCount({
+      increment: likeClicks.value,
+      postId: props.postId,
+    });
+
+    likeClicks.value = 0;
+  }, 500)
+);
 
 const likePost = async () => {
   console.log('like +1');
