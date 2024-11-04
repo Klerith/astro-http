@@ -9,6 +9,7 @@
 </template>
 
 <script lang="ts" setup>
+import { actions } from 'astro:actions';
 import { ref } from 'vue';
 
 import confetti from 'canvas-confetti';
