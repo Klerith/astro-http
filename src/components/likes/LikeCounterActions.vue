@@ -52,7 +52,7 @@ const likePost = () => {
 };
 
 const getCurrentLikes = async () => {
-  const { data } = await actions.getPostLikes(props.postId);
+  const { data, error } = await actions.getPostLikes(props.postId);
 
   likeCount.value = data?.likes ?? 0;
   isLoading.value = false;
