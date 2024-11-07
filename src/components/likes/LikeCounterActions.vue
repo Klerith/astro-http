@@ -1,28 +1,18 @@
 <template>
+  <div v-if="isLoading">Loading...</div>
 
-  <div v-if="isLoading">
-    Loading...
-  </div>
-
-
-  <button v-else-if="likeCount === 0" @click="likePost">
-      Like this post
-  </button>
+  <button v-else-if="likeCount === 0" @click="likePost">Like this post</button>
 
   <button v-else @click="likePost">
-      Likes 
-      <span>{{ likeCount }}</span>
+    Likes
+    <span>{{ likeCount }}</span>
   </button>
-
-  
-
 </template>
-
 
 <script lang="ts" setup>
 import { ref, watch } from 'vue';
 import confetti from 'canvas-confetti';
-import debounce from 'lodash.debounce'
+import debounce from 'lodash.debounce';
 import { actions } from 'astro:actions';
 
 interface Props {
@@ -35,55 +25,41 @@ const likeCount = ref(0);
 const likeClicks = ref(0);
 const isLoading = ref(true);
 
+watch(
+  likeCount,
+  debounce(async () => {
+    actions.updatePostsLikes({
+      postId: props.postId,
+      likes: likeClicks.value,
+    });
 
-watch( likeCount, debounce(async() =>{
-  
-  actions.updatePostsLikes({
-    postId: props.postId,
-    likes: likeClicks.value,
-  })
+    likeClicks.value = 0;
+  }, 500)
+);
 
-  
-  likeClicks.value = 0;
-
-}, 500 ))
-
-
-
-
-const likePost =()=> {
-
-  likeCount.value++
+const likePost = () => {
+  likeCount.value++;
   likeClicks.value++;
-
 
   confetti({
     particleCount: 100,
     spread: 70,
     origin: {
       x: Math.random(),
-      y: Math.random() - 0.2
-    }
-  })
+      y: Math.random() - 0.2,
+    },
+  });
+};
 
-}
+const getCurrentLikes = async () => {
+  const { data } = await actions.getPostLikes(props.postId);
 
-
-
-const getCurrentLikes = async() => {
-  
-  const { likes } = await actions.getPostLikes(props.postId);
-  
-  likeCount.value = likes;
-  isLoading.value = false; 
-
-}
-
+  likeCount.value = data?.likes ?? 0;
+  isLoading.value = false;
+};
 
 getCurrentLikes();
-
 </script>
-
 
 <style scoped>
 button {
