@@ -1,4 +1,6 @@
-import { defineAction, z } from 'astro:actions';
+import { defineAction } from 'astro:actions';
+import { z } from 'astro:schema';
+
 import { Posts, db, eq } from 'astro:db';
 
 export const updatePostsLikes = defineAction({

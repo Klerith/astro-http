@@ -1,5 +1,5 @@
 import { defineAction } from 'astro/actions/runtime/virtual/server.js';
-import { z } from 'astro/zod';
+import { z } from 'astro:schema';
 import { db, Posts, eq } from 'astro:db';
 
 export const getPostLikes = defineAction({
