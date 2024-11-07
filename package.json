@@ -12,18 +12,18 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/check": "^0.7.0",
-    "@astrojs/cloudflare": "^10.4.2",
-    "@astrojs/db": "^0.11.6",
-    "@astrojs/mdx": "^3.1.1",
-    "@astrojs/rss": "^4.0.6",
-    "@astrojs/sitemap": "^3.1.6",
-    "@astrojs/vue": "^4.5.0",
-    "astro": "^4.11.0",
+    "@astrojs/check": "^0.9.4",
+    "@astrojs/cloudflare": "^11.2.0",
+    "@astrojs/db": "^0.14.3",
+    "@astrojs/mdx": "^3.1.9",
+    "@astrojs/rss": "^4.0.9",
+    "@astrojs/sitemap": "^3.2.1",
+    "@astrojs/vue": "^4.5.2",
+    "astro": "^4.16.10",
     "canvas-confetti": "^1.9.3",
     "lodash.debounce": "^4.0.8",
-    "typescript": "^5.5.2",
-    "vue": "^3.4.29"
+    "typescript": "^5.6.3",
+    "vue": "^3.5.12"
   },
   "devDependencies": {
     "@types/canvas-confetti": "^1.6.4",

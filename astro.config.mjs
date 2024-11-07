@@ -14,7 +14,9 @@ export default defineConfig( {
   integrations: [ mdx(), sitemap(), db(), vue() ],
   output: "hybrid",
   adapter: cloudflare(),
-  experimental: {
-    actions: true,
-  },
+
+  // Desde la versión 4.15, ya no es experimental
+  // experimental: {
+  //   actions: true,
+  // },
 } );
